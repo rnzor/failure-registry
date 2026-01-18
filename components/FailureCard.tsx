@@ -136,7 +136,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
       </div>
       
       {/* Action Buttons */}
-      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity translate-x-2 group-hover:translate-x-0 z-20">
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-black/70 backdrop-blur-sm rounded-lg p-1">
         <button 
             onClick={(e) => handleAction(e, handleCopyMarkdown)}
             className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors relative"
