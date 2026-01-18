@@ -15,6 +15,7 @@ import { IncidentModal } from './components/IncidentModal';
 import { CommandPalette } from './components/CommandPalette';
 import { StatsDashboard } from './components/StatsDashboard';
 import { PostMortemGenerator } from './components/PostMortemGenerator';
+import { CardSkeleton } from './components/ui/Skeleton';
 
 type ViewState = 'landing' | 'feed' | 'calculator' | 'wizard' | 'checklist' | 'dev-portal' | 'analytics' | 'generator';
 type FeedMode = 'list' | 'timeline';
@@ -208,9 +209,9 @@ function App() {
             </div>
 
             {loading ? (
-                <div className="space-y-4 animate-pulse">
-                    {[1, 2, 3].map(i => (
-                        <div key={i} className="h-48 bg-zinc-100 dark:bg-zinc-900/50 rounded border border-zinc-200 dark:border-zinc-800"></div>
+                <div className="space-y-4">
+                    {[1, 2, 3, 4, 5].map(i => (
+                        <CardSkeleton key={i} />
                     ))}
                 </div>
             ) : filteredEntries.length > 0 ? (
@@ -321,7 +322,7 @@ function App() {
              </button>
 
              <a 
-                href="https://github.com/my-org/awesome-tech-failures" 
+                href="https://github.com/rnzor/awesome-tech-failures" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="group flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
