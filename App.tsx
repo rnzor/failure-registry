@@ -337,8 +337,8 @@ function App() {
             </div>
           </div>
 
-          <div className="flex-1 max-w-lg mx-4 sm:mx-8">
-            <div className="relative group cursor-text" onClick={() => setIsCmdOpen(true)}>
+          <div className="flex-1 max-w-lg mx-4 sm:mx-8 flex justify-end sm:justify-center">
+            <div className="relative group cursor-text hidden sm:block w-full" onClick={() => setIsCmdOpen(true)}>
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg opacity-0 group-hover:opacity-20 blur transition duration-500"></div>
 
               <div className="relative flex items-center">
@@ -347,7 +347,7 @@ function App() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <div className="block w-full pl-10 pr-12 py-3 sm:py-2 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg sm:text-sm font-mono transition-all truncate">
+                <div className="block w-full pl-10 pr-12 py-2 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg sm:text-sm font-mono transition-all truncate">
                   Search or Type Command...
                 </div>
                 <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
@@ -357,6 +357,16 @@ function App() {
                 </div>
               </div>
             </div>
+
+            {/* Mobile Compact Command Icon */}
+            <button
+              onClick={() => setIsCmdOpen(true)}
+              className="sm:hidden p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
           </div>
 
           <div className="flex items-center gap-4 border-l border-zinc-200 dark:border-zinc-800 pl-6">

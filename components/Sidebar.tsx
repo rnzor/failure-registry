@@ -12,7 +12,7 @@ interface Props {
 const CATEGORIES: Category[] = ['ai-slop', 'outage', 'security', 'startup', 'product', 'decision'];
 
 const NavIcon = ({ active, children }: { active: boolean, children?: React.ReactNode }) => (
-  <div className={`mr-2 md:mr-3 transition-colors duration-300 ${active ? 'text-blue-600 dark:text-blue-400 drop-shadow-[0_0_5px_rgba(37,99,235,0.5)] dark:drop-shadow-[0_0_5px_rgba(59,130,246,0.8)]' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400'}`}>
+  <div className={`mb-1 md:mb-0 md:mr-3 transition-colors duration-300 ${active ? 'text-blue-600 dark:text-blue-400 drop-shadow-[0_0_5px_rgba(37,99,235,0.5)] dark:drop-shadow-[0_0_5px_rgba(59,130,246,0.8)]' : 'text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400'}`}>
     {children}
   </div>
 );
@@ -22,7 +22,7 @@ const ActiveIndicator = ({ active }: { active: boolean }) => (
 );
 
 const ActiveGradient = ({ active }: { active: boolean }) => (
-  <div className={`absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-blue-500/10 to-transparent transition-opacity duration-300 pointer-events-none ${active ? 'opacity-100' : 'opacity-0'}`} />
+  <div className={`absolute inset-0 bg-blue-50/50 dark:bg-blue-900/10 md:bg-gradient-to-r md:from-blue-500/10 md:to-transparent transition-opacity duration-300 pointer-events-none rounded-lg md:rounded-none ${active ? 'opacity-100' : 'opacity-0'}`} />
 );
 
 const formatCategoryName = (cat: Category): string => {
@@ -58,15 +58,15 @@ export const Sidebar: React.FC<Props> = ({
   }, []);
 
   const navItemClass = (viewName: string) => `
-    group relative flex-shrink-0 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start px-4 py-4 md:py-3 text-xs md:text-sm font-medium transition-all duration-300 cursor-pointer select-none
+    group relative flex-shrink-0 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start px-2 py-3 md:px-4 md:py-3 text-xs md:text-sm font-medium transition-all duration-300 cursor-pointer select-none rounded-lg border border-transparent
     ${currentView === viewName
-      ? 'text-zinc-900 dark:text-white bg-zinc-100/50 dark:bg-white/5 md:bg-transparent'
-      : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
+      ? 'text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-900 border-zinc-200/50 dark:border-zinc-700/50 shadow-sm md:bg-transparent md:border-transparent md:shadow-none'
+      : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:border-zinc-200/30 dark:hover:border-zinc-800/30'
     }
   `;
 
   const filterItemClass = (catName: string) => `
-    w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 border
+  w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 border
     ${selectedCategory === catName
       ? 'bg-zinc-200 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-white shadow-[0_0_10px_rgba(0,0,0,0.05)] dark:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
       : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-700 dark:hover:text-zinc-300'
@@ -76,9 +76,9 @@ export const Sidebar: React.FC<Props> = ({
   return (
     <aside className="w-full md:w-64 flex-shrink-0 flex flex-col gap-6 md:block">
       <div className="md:sticky md:top-24">
-        <div className="border-b md:border-b-0 md:border-l border-zinc-200 dark:border-zinc-800/50 pb-2 md:pb-0 overflow-x-auto md:overflow-visible [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] md:[mask-image:none]">
-          <h2 className="hidden md:block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] mb-4 px-4">System_Modules</h2>
-          <nav className="flex md:flex-col space-x-1 md:space-x-0 md:space-y-0.5 min-w-max px-2 md:px-0">
+        <div className="border-b md:border-b-0 md:border-l border-zinc-200 dark:border-zinc-800/50 pb-4 md:pb-0">
+          <h2 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] mb-4 px-1 md:px-4">System_Modules</h2>
+          <nav className="grid grid-cols-2 md:flex md:flex-col gap-2 md:space-y-0.5 px-0.5 md:px-0">
             <button onClick={() => onChangeView('landing')} className={navItemClass('landing')}>
               <ActiveIndicator active={currentView === 'landing'} />
               <ActiveGradient active={currentView === 'landing'} />
@@ -160,7 +160,7 @@ export const Sidebar: React.FC<Props> = ({
               <span className="relative z-10 tracking-wide font-mono">AGENT_PREFLIGHT</span>
             </button>
 
-            <button onClick={() => onChangeView('dev-portal')} className={`${navItemClass('dev-portal')} md:mt-4 md:border-t md:border-zinc-200 md:dark:border-zinc-800/50 md:pt-4`}>
+            <button onClick={() => onChangeView('dev-portal')} className={`${navItemClass('dev-portal')} md: mt - 4 md: border - t md: border - zinc - 200 md: dark: border - zinc - 800 / 50 md: pt - 4`}>
               <ActiveIndicator active={currentView === 'dev-portal'} />
               <ActiveGradient active={currentView === 'dev-portal'} />
               <NavIcon active={currentView === 'dev-portal'}>
