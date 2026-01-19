@@ -46,7 +46,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={() => onClick && onClick(entry)}
-        className="card-3d group relative rounded-xl bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 p-6 cursor-pointer h-full flex flex-col transition-all duration-300"
+        className="card-3d group relative rounded-xl bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 cursor-pointer h-full flex flex-col transition-all duration-300"
         style={{ transformStyle: 'preserve-3d' }}
       >
         <div className="relative z-10 flex flex-col h-full" style={{ transformStyle: 'preserve-3d' }}>
@@ -88,6 +88,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
               style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
               onMouseEnter={() => setIsRootHovered(true)}
               onMouseLeave={() => setIsRootHovered(false)}
+              onClick={(e) => { e.stopPropagation(); setIsRootHovered(!isRootHovered); }}
             >
               <span className={`forensic-label absolute -top-4 left-0 transition-opacity duration-300 ${isRootHovered ? 'opacity-100 digital-blink text-red-500' : 'opacity-0'}`}>
                 PRIMARY FAILURE VECTOR

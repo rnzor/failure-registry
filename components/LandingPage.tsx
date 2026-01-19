@@ -188,7 +188,7 @@ export const LandingPage: React.FC<Props> = ({ onNavigate, entries, onSelectEntr
             <span className="text-zinc-800 dark:text-zinc-200">{entries.length} RECORDS INDEXED</span>
           </div>
 
-          <h1 className="text-7xl md:text-9xl font-black text-zinc-900 dark:text-white tracking-[ -0.05em] leading-[0.85] select-none group cursor-default transition-all duration-700">
+          <h1 className="text-4xl sm:text-7xl md:text-9xl font-black text-zinc-900 dark:text-white tracking-[ -0.05em] leading-[0.85] select-none group cursor-default transition-all duration-700">
             <div className="inline-block relative">
               <span className="block glitch-text" data-text="FAILURE">FAILURE</span>
             </div>
@@ -215,7 +215,7 @@ export const LandingPage: React.FC<Props> = ({ onNavigate, entries, onSelectEntr
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-8 bg-white/50 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 backdrop-blur-xl shadow-2xl">
+          <div className="hidden md:block lg:col-span-8 bg-white/50 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 backdrop-blur-xl shadow-2xl">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em]">Temporal_Incident_Map</h3>
               <div className="flex gap-2">

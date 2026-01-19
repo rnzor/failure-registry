@@ -347,7 +347,7 @@ function App() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <div className="block w-full pl-10 pr-12 py-2 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg sm:text-sm font-mono transition-all truncate">
+                <div className="block w-full pl-10 pr-12 py-3 sm:py-2 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg sm:text-sm font-mono transition-all truncate">
                   Search or Type Command...
                 </div>
                 <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
@@ -362,7 +362,7 @@ function App() {
           <div className="flex items-center gap-4 border-l border-zinc-200 dark:border-zinc-800 pl-6">
             <button
               onClick={toggleTheme}
-              className="p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="p-3 sm:p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
               title="Toggle Laboratory/Dark Mode"
             >
               {theme === 'dark' ? (
