@@ -5,6 +5,7 @@ import { IncidentHeatmap } from './IncidentHeatmap';
 interface Props {
   onNavigate: (view: any) => void;
   entries: FailureEntry[];
+  onSelectEntry: (entry: FailureEntry) => void;
 }
 
 const TERMINAL_LINES = [
@@ -16,47 +17,99 @@ const TERMINAL_LINES = [
 ];
 
 // News Ticker Component
-const Ticker: React.FC<{ entries: FailureEntry[] }> = ({ entries }) => {
-  const displayEntries = entries.length > 0 ? entries.concat(entries) : [];
+const Ticker: React.FC<{ entries: FailureEntry[]; onSelectEntry: (entry: FailureEntry) => void }> = ({ entries, onSelectEntry }) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = React.useState(0);
+  const [isPaused, setIsPaused] = React.useState(false);
+  const [contentWidth, setContentWidth] = React.useState(0);
+
+  // Measure content width
+  React.useEffect(() => {
+    if (containerRef.current) {
+      setContentWidth(containerRef.current.scrollWidth / 2);
+    }
+  }, [entries]);
+
+  // Animation loop
+  React.useEffect(() => {
+    if (entries.length === 0 || contentWidth === 0) return;
+
+    let animationId: number;
+    let lastTime = performance.now();
+    const pixelsPerSecond = 20; // Very slow: 20 pixels per second
+
+    const animate = (currentTime: number) => {
+      if (!isPaused) {
+        const deltaTime = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+
+        setOffset(prev => {
+          const newOffset = prev - (pixelsPerSecond * deltaTime);
+          if (Math.abs(newOffset) >= contentWidth) {
+            return 0;
+          }
+          return newOffset;
+        });
+      } else {
+        lastTime = currentTime;
+      }
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [entries, contentWidth, isPaused]);
+
+  if (entries.length === 0) {
+    return null;
+  }
+
+  const displayEntries = [...entries, ...entries];
 
   return (
-    <div className="w-full bg-zinc-100 dark:bg-black/80 border-y border-zinc-200 dark:border-zinc-800 py-3 overflow-hidden relative flex items-center backdrop-blur-md">
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-100 dark:from-black to-transparent z-10"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-100 dark:from-black to-transparent z-10"></div>
+    <div
+      className="w-full bg-zinc-100 dark:bg-black/80 border-y border-zinc-200 dark:border-zinc-800 py-4 overflow-hidden relative flex items-center"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-zinc-100 dark:from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-zinc-100 dark:from-black to-transparent z-10 pointer-events-none"></div>
 
-      <div className="ticker-content whitespace-nowrap animate-[marquee_600s_linear_infinite] flex items-center gap-12 px-6 will-change-transform">
-        {displayEntries.map((entry, i) => (
-          <div key={`${entry.id}-${i}`} className="flex items-center gap-3 text-xs font-mono group cursor-default">
-            <span className={`w-2.5 h-2.5 rounded-full ${entry.severity.level === 'critical' ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.7)] animate-pulse' :
-              entry.severity.level === 'high' ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]' : 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]'
-              }`}></span>
-            <span className="text-zinc-500 dark:text-zinc-500 font-black tracking-widest">{entry.year}</span>
-            <span className="text-zinc-900 dark:text-zinc-300 font-bold group-hover:text-blue-500 transition-colors uppercase">
-              {entry.companies?.[0] ? `${entry.companies[0]} // ` : ''}{entry.title}
-            </span>
-          </div>
-        ))}
+      <div
+        ref={containerRef}
+        className="flex items-center gap-8 px-4"
+        style={{
+          transform: `translateX(${offset}px)`,
+          willChange: 'transform',
+        }}
+      >
+        {displayEntries.map((entry, i) => {
+          const severityLevel = entry.severity?.level || (typeof entry.severity === 'string' ? (entry.severity as string).toLowerCase() : 'medium');
+          const year = entry.year || 'N/A';
+          return (
+            <button
+              key={`${entry.id}-${i}`}
+              onClick={() => onSelectEntry(entry)}
+              className="flex items-center gap-2 text-xs font-mono group cursor-pointer hover:opacity-70 transition-opacity flex-shrink-0"
+            >
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${severityLevel === 'critical' ? 'bg-red-500' :
+                severityLevel === 'high' ? 'bg-orange-500' : 'bg-blue-500'
+                }`}></span>
+              <span className="text-zinc-500 font-bold">{year}</span>
+              <span className="text-zinc-700 dark:text-zinc-300 font-medium uppercase whitespace-nowrap">
+                {entry.companies?.[0] ? `${entry.companies[0]} // ` : ''}{entry.title}
+              </span>
+            </button>
+          );
+        })}
       </div>
-
-      <style>{`
-                @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-                .ticker-content {
-                    backface-visibility: hidden;
-                    perspective: 1000;
-                    transform: translateZ(0);
-                }
-                .ticker-content:hover {
-                    animation-play-state: paused;
-                }
-            `}</style>
     </div>
   );
 };
 
-export const LandingPage: React.FC<Props> = ({ onNavigate, entries }) => {
+
+
+export const LandingPage: React.FC<Props> = ({ onNavigate, entries, onSelectEntry }) => {
   const [typedText, setTypedText] = useState('');
 
   const fullText = "Studying failure is a competitive advantage.";
@@ -157,7 +210,7 @@ export const LandingPage: React.FC<Props> = ({ onNavigate, entries }) => {
         </div>
 
         <div className="w-full scale-[1.02] md:scale-100">
-          <Ticker entries={entries} />
+          <Ticker entries={entries} onSelectEntry={onSelectEntry} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -217,7 +270,7 @@ export const LandingPage: React.FC<Props> = ({ onNavigate, entries }) => {
             <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold mt-2">Verification_QA</div>
           </div>
           <div className="p-8 bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800/50 rounded-3xl text-center backdrop-blur-md shadow-inner transition-all hover:border-zinc-400/20">
-            <div className="text-4xl font-black text-zinc-900 dark:text-white font-mono tracking-tighter">{lastIncident ? lastIncident.year : '2026'}</div>
+            <div className="text-4xl font-black text-zinc-900 dark:text-white font-mono tracking-tighter">{lastIncident ? lastIncident.year : 'N/A'}</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold mt-2">Latest_Capture</div>
           </div>
         </div>

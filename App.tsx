@@ -144,7 +144,7 @@ function App() {
   const renderContent = () => {
     switch (currentView) {
       case 'landing':
-        return <LandingPage onNavigate={setCurrentView} entries={entries} />;
+        return <LandingPage onNavigate={setCurrentView} entries={entries} onSelectEntry={setSelectedEntry} />;
       case 'calculator':
         return <SeverityCalculator />;
       case 'wizard':

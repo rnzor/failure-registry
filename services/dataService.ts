@@ -46,10 +46,20 @@ export const loadFailures = async (): Promise<FailureEntry[]> => {
     const response = await fetchWithRetry(() => getFailures());
     console.log("Data loaded from API.");
 
-    return response.data.map((apiFailure: ApiFailure) => {
-      // Extract company names from title using separators
-      let companies: string[] = [];
-      if (apiFailure.title) {
+    return response.data.map((apiFailure: any) => {
+      // Extract year from date string if year field is not present
+      let year: number;
+      if (apiFailure.year && typeof apiFailure.year === 'number') {
+        year = apiFailure.year;
+      } else if (apiFailure.date && typeof apiFailure.date === 'string') {
+        year = parseInt(apiFailure.date.split('-')[0], 10) || 2020;
+      } else {
+        year = 2020;
+      }
+
+      // Use companies from API if present, otherwise extract from title
+      let companies: string[] = apiFailure.companies || [];
+      if (companies.length === 0 && apiFailure.title) {
         const separators = [' — ', ' - ', ': ', ' – '];
         for (const separator of separators) {
           if (apiFailure.title.includes(separator)) {
@@ -57,7 +67,6 @@ export const loadFailures = async (): Promise<FailureEntry[]> => {
             break;
           }
         }
-        // Fallback: First word if it looks like a Proper Noun
         if (companies.length === 0) {
           const firstWord = apiFailure.title.split(' ')[0];
           if (firstWord && /^[A-Z]/.test(firstWord) && firstWord.length > 2) {
@@ -66,24 +75,46 @@ export const loadFailures = async (): Promise<FailureEntry[]> => {
         }
       }
 
+      // Normalize severity to object format
+      let severity: SeverityObject;
+      if (typeof apiFailure.severity === 'string') {
+        severity = { level: apiFailure.severity.toLowerCase() as any };
+      } else if (apiFailure.severity && typeof apiFailure.severity === 'object') {
+        severity = apiFailure.severity as SeverityObject;
+      } else {
+        severity = { level: 'medium' };
+      }
+
+      // Normalize category to new format
+      const categoryMap: Record<string, Category> = {
+        'Production Outage': 'outage',
+        'AI Slop': 'ai-slop',
+        'Security Incident': 'security',
+        'Startup Failure': 'startup',
+        'UX Disaster': 'product',
+        'Hardware Failure': 'product',
+        'Decision Failure': 'decision',
+      };
+      const category = categoryMap[apiFailure.category] || (apiFailure.category?.toLowerCase() as Category) || 'product';
+
       // Map API object to our clean Internal Interface
       return {
         id: apiFailure.id,
         title: apiFailure.title,
-        year: apiFailure.year,
-        category: apiFailure.category as Category,
-        cause: apiFailure.cause as Cause,
-        severity: apiFailure.severity as SeverityObject,
-        summary: apiFailure.summary,
+        year,
+        category,
+        cause: (apiFailure.cause as Cause) || 'human-error',
+        severity,
+        summary: apiFailure.summary || apiFailure.description || '',
         stage: apiFailure.stage as Stage,
-        impact: apiFailure.impact || [],
+        impact: Array.isArray(apiFailure.impact) ? apiFailure.impact : (apiFailure.impact ? [apiFailure.impact] : []),
         root_cause: apiFailure.root_cause,
         lessons: apiFailure.lessons || [],
         patterns: apiFailure.patterns || [],
         tags: apiFailure.tags || [],
         sources: apiFailure.sources as Source[],
         evidence_type: apiFailure.evidence_type as EvidenceType,
-        companies // UI specific
+        companies
       };
     });
   } catch (error) {
