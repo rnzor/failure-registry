@@ -1,7 +1,7 @@
 {
   "name": "awesome-tech-failures",
   "private": true,
-  "version": "2.0.26",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

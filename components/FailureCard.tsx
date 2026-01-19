@@ -122,7 +122,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
                 <div className="font-mono text-[11px] flex-1 overflow-visible flex flex-col min-h-[80px]">
                   <div className="flex items-center gap-2 text-red-500/80 mb-2">
                     <span className="shrink-0 animate-pulse">#</span>
-                    <span className="typing-command">fetch --extract --source=core_logs</span>
+                    <span className="typing-command">fetch("https://rnzor.github.io/awesome-tech-failures/api/v1/failures.json")</span>
                   </div>
 
                   <div className="flex-1">

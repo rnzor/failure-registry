@@ -16,7 +16,7 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export class GitHubService {
   private static get owner(): string {
-    return (import.meta as any).env?.VITE_GITHUB_OWNER || 'my-org';
+    return (import.meta as any).env?.VITE_GITHUB_OWNER || 'rnzor';
   }
 
   private static get repo(): string {
