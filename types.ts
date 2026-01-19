@@ -1,35 +1,46 @@
-export enum Severity {
-  CRITICAL = 'Critical',
-  HIGH = 'High',
-  MEDIUM = 'Medium',
-  LOW = 'Low',
-  INFO = 'Info'
+export type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
+
+export interface SeverityObject {
+  level: SeverityLevel;
+  score?: number;
+  financial?: string;
 }
 
-export enum Category {
-  AI_SLOP = 'AI Slop',
-  PRODUCTION_OUTAGE = 'Production Outage',
-  SECURITY_INCIDENT = 'Security Incident',
-  STARTUP_FAILURE = 'Startup Failure',
-  UX_DISASTER = 'UX Disaster',
-  HARDWARE_FAILURE = 'Hardware Failure'
-}
+export type Category = 'ai-slop' | 'outage' | 'security' | 'startup' | 'product' | 'decision';
 
-export interface Link {
+export type Cause =
+  | 'human-error' | 'automation' | 'architecture'
+  | 'incentives' | 'ai' | 'timing' | 'ecosystem'
+  | 'ux-mismatch' | 'platform-risk' | 'no-pmf'
+  | 'deployment-validation' | 'latent-bug';
+
+export type Stage = 'early' | 'growth' | 'scale' | 'decline';
+
+export type EvidenceType = 'direct_incident' | 'repeated_pattern';
+
+export interface Source {
   title: string;
   url: string;
-  type: 'post-mortem' | 'news' | 'github' | 'social';
+  kind: 'primary' | 'secondary';
 }
 
 export interface FailureEntry {
   id: string;
   title: string;
-  date: string; // ISO date string YYYY-MM-DD
+  year: number;
   category: Category;
-  severity: Severity;
+  cause: Cause;
+  severity: SeverityObject;
+  summary: string;
+  // Optional but part of schema
+  stage?: Stage;
+  impact?: string[];
+  root_cause?: string;
+  lessons?: string[];
+  patterns?: string[];
+  tags?: string[];
+  sources?: Source[];
+  evidence_type?: EvidenceType;
+  // UI specific (helper)
   companies: string[];
-  description: string;
-  impact?: string;
-  tags: string[];
-  links: Link[];
 }

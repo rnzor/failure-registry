@@ -1,4 +1,6 @@
-import { FailureEntry, Category, Severity } from '../types';
+import { FailureEntry, Category, Cause, Stage, EvidenceType, Source, SeverityObject } from '../types';
+import { getFailures } from './apiService';
+import { ApiFailure } from '../types/api';
 
 /**
  * Parses raw NDJSON string into typed FailureEntry array.
@@ -6,7 +8,7 @@ import { FailureEntry, Category, Severity } from '../types';
  */
 export const parseNDJSON = (ndjsonContent: string): FailureEntry[] => {
   if (!ndjsonContent) return [];
-  
+
   return ndjsonContent
     .trim()
     .split('\n')
@@ -14,7 +16,6 @@ export const parseNDJSON = (ndjsonContent: string): FailureEntry[] => {
       try {
         if (!line.trim()) return null;
         const parsed = JSON.parse(line);
-        // Ensure ID exists, if not generate one based on index
         if (!parsed.id) {
           parsed.id = `entry-${index}-${Date.now()}`;
         }
@@ -27,42 +28,66 @@ export const parseNDJSON = (ndjsonContent: string): FailureEntry[] => {
     .filter((entry): entry is FailureEntry => entry !== null);
 };
 
-// SIMULATED NDJSON CONTENT
-// Used as fallback if the fetch fails
-const MOCK_NDJSON_CONTENT = `
-{"id": "crowdstrike-bsod", "title": "CrowdStrike Falcon Update Boot Loop", "date": "2024-07-19", "category": "Production Outage", "severity": "Critical", "companies": ["CrowdStrike", "Microsoft"], "description": "A faulty content update for the Falcon sensor caused approximately 8.5 million Windows devices to crash with a Blue Screen of Death (BSOD), impacting airlines, banks, and healthcare globally.", "impact": "8.5M devices impacted, estimated $10B+ in damages.", "tags": ["bsod", "kernel-mode", "qa-failure"], "links": [{"title": "Post Mortem", "url": "https://www.crowdstrike.com/blog/falcon-update-for-windows-hosts-technical-details/", "type": "post-mortem"}]}
-{"id": "rabbit-r1", "title": "Rabbit R1 Launch", "date": "2024-04-23", "category": "AI Slop", "severity": "Medium", "companies": ["Rabbit"], "description": "The dedicated AI hardware device launched with missing features, poor battery life, and was revealed to be running a simple Android app wrapper, failing to deliver on the 'Large Action Model' promise.", "impact": "Reputational damage, mass refunds.", "tags": ["hardware", "ai-hype", "android"], "links": [{"title": "Review", "url": "https://www.youtube.com/watch?v=ddT5X4r_t-I", "type": "news"}]}
-{"id": "log4j-shell", "title": "Log4Shell (Log4j Vulnerability)", "date": "2021-12-09", "category": "Security Incident", "severity": "Critical", "companies": ["Apache Software Foundation"], "description": "A zero-day vulnerability in the widely used Java logging library Log4j allowed for unauthenticated remote code execution (RCE) via a specific string pattern.", "impact": "Universal impact across enterprise Java applications.", "tags": ["rce", "zero-day", "java"], "links": [{"title": "CVE-2021-44228", "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-44228", "type": "post-mortem"}]}
-{"id": "quibi", "title": "Quibi Shutdown", "date": "2020-10-21", "category": "Startup Failure", "severity": "High", "companies": ["Quibi"], "description": "Short-form streaming service shutdown just 6 months after launch despite raising $1.75 billion, due to poor product-market fit and restriction to mobile-only viewing.", "impact": "$1.75B capital lost.", "tags": ["streaming", "product-market-fit"], "links": [{"title": "WSJ Report", "url": "#", "type": "news"}]}
-{"id": "ftx-collapse", "title": "FTX Liquidity Crisis", "date": "2022-11-11", "category": "Startup Failure", "severity": "Critical", "companies": ["FTX", "Alameda Research"], "description": "The world's second-largest cryptocurrency exchange collapsed due to liquidity crisis and misuse of customer funds.", "impact": "Billions in customer funds lost, criminal charges.", "tags": ["crypto", "fraud"], "links": [{"title": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Bankruptcy_of_FTX", "type": "news"}]}
-{"id": "meta-outage-2021", "title": "Facebook BGP Outage", "date": "2021-10-04", "category": "Production Outage", "severity": "High", "companies": ["Meta", "Facebook"], "description": "Configuration changes to backbone routers caused a massive interruption to network traffic, effectively disconnecting Facebook data centers globally.", "impact": "6 hours downtime for FB, Insta, WhatsApp.", "tags": ["bgp", "networking"], "links": [{"title": "Engineering Blog", "url": "#", "type": "post-mortem"}]}
-{"id": "google-gemini-images", "title": "Gemini Image Generation Suspension", "date": "2024-02-22", "category": "AI Slop", "severity": "Medium", "companies": ["Google"], "description": "Google paused Gemini's ability to generate images of people after it produced historically inaccurate and biased depictions.", "impact": "Public backlash, stock dip.", "tags": ["genai", "bias"], "links": [{"title": "Google Blog", "url": "#", "type": "post-mortem"}]}
-{"id": "knight-capital", "title": "Knight Capital Trading Error", "date": "2012-08-01", "category": "Production Outage", "severity": "Critical", "companies": ["Knight Capital"], "description": "A deployment error repurposed an old flag, causing a high-frequency trading algorithm to buy high and sell low, losing $440 million in 45 minutes.", "impact": "Company collapse, acquired by Getco.", "tags": ["deployment", "trading", "devops"], "links": [{"title": "SEC Report", "url": "#", "type": "post-mortem"}]}
-{"id": "theranos", "title": "Theranos Fraud", "date": "2015-10-15", "category": "Startup Failure", "severity": "Critical", "companies": ["Theranos"], "description": "Health technology company claimed to have devised blood tests that required only very small amounts of blood, later revealed to be fraudulent.", "impact": "$9B valuation to zero, criminal convictions.", "tags": ["fraud", "biotech"], "links": [{"title": "WSJ Investigation", "url": "#", "type": "news"}]}
-{"id": "solarwinds", "title": "SolarWinds Supply Chain Attack", "date": "2020-12-13", "category": "Security Incident", "severity": "Critical", "companies": ["SolarWinds"], "description": "Hackers inserted malicious code into the Orion software update, compromising thousands of government and corporate networks.", "impact": "Massive data breach of US Govt agencies.", "tags": ["supply-chain", "nation-state"], "links": [{"title": "CISA Alert", "url": "#", "type": "post-mortem"}]}
-{"id": "juicero", "title": "Juicero", "date": "2017-09-01", "category": "Startup Failure", "severity": "Low", "companies": ["Juicero"], "description": "A $400 wi-fi connected juicer that squeezed juice packs which could be squeezed faster by hand.", "impact": "Shut down, symbol of silicon valley excess.", "tags": ["hardware", "over-engineering"], "links": [{"title": "Bloomberg", "url": "#", "type": "news"}]}
-{"id": "samsung-note-7", "title": "Samsung Galaxy Note 7 Explosions", "date": "2016-08-19", "category": "Hardware Failure", "severity": "High", "companies": ["Samsung"], "description": "Defective batteries caused phones to catch fire and explode, leading to a total recall and ban from flights.", "impact": "$5B+ cost, brand damage.", "tags": ["battery", "recall"], "links": [{"title": "Press Release", "url": "#", "type": "post-mortem"}]}
-{"id": "tay-ai", "title": "Microsoft Tay", "date": "2016-03-23", "category": "AI Slop", "severity": "Medium", "companies": ["Microsoft"], "description": "Twitter chatbot released by Microsoft that was manipulated by users into posting offensive and racist tweets within 24 hours.", "impact": "Shut down in 16 hours.", "tags": ["chatbot", "moderation"], "links": [{"title": "The Verge", "url": "#", "type": "news"}]}
-{"id": "cyberpunk-2077", "title": "Cyberpunk 2077 Console Launch", "date": "2020-12-10", "category": "UX Disaster", "severity": "Medium", "companies": ["CD Projekt Red"], "description": "Highly anticipated game launched in an unplayable state on previous-gen consoles, leading to unprecedented removal from PlayStation Store.", "impact": "Stock crash, refunds, lawsuits.", "tags": ["gaming", "bugs"], "links": [{"title": "Sony Statement", "url": "#", "type": "news"}]}
-`;
+async function fetchWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      const delay = Math.pow(2, i) * 1000;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error('Max retries exceeded');
+}
 
 export const loadFailures = async (): Promise<FailureEntry[]> => {
   try {
-    // Attempt to fetch from the public folder path expected in deployment
-    const response = await fetch('/agent/entries.ndjson');
-    if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
-    }
-    const text = await response.text();
-    console.log("Data loaded from external ndjson.");
-    return parseNDJSON(text);
-  } catch (error) {
-    console.warn("Could not load external data, falling back to embedded mock.", error);
-    // Simulate slight network delay for realism even on fallback
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(parseNDJSON(MOCK_NDJSON_CONTENT));
-        }, 300);
+    const response = await fetchWithRetry(() => getFailures());
+    console.log("Data loaded from API.");
+
+    return response.data.map((apiFailure: ApiFailure) => {
+      // Extract company names from title using separators
+      let companies: string[] = [];
+      if (apiFailure.title) {
+        const separators = [' — ', ' - ', ': ', ' – '];
+        for (const separator of separators) {
+          if (apiFailure.title.includes(separator)) {
+            companies = [apiFailure.title.split(separator)[0].trim()];
+            break;
+          }
+        }
+        // Fallback: First word if it looks like a Proper Noun
+        if (companies.length === 0) {
+          const firstWord = apiFailure.title.split(' ')[0];
+          if (firstWord && /^[A-Z]/.test(firstWord) && firstWord.length > 2) {
+            companies = [firstWord];
+          }
+        }
+      }
+
+      // Map API object to our clean Internal Interface
+      return {
+        id: apiFailure.id,
+        title: apiFailure.title,
+        year: apiFailure.year,
+        category: apiFailure.category as Category,
+        cause: apiFailure.cause as Cause,
+        severity: apiFailure.severity as SeverityObject,
+        summary: apiFailure.summary,
+        stage: apiFailure.stage as Stage,
+        impact: apiFailure.impact || [],
+        root_cause: apiFailure.root_cause,
+        lessons: apiFailure.lessons || [],
+        patterns: apiFailure.patterns || [],
+        tags: apiFailure.tags || [],
+        sources: apiFailure.sources as Source[],
+        evidence_type: apiFailure.evidence_type as EvidenceType,
+        companies // UI specific
+      };
     });
+  } catch (error) {
+    console.error("Failed to load data from API:", error);
+    throw error;
   }
 };
