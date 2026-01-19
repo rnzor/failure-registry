@@ -10,7 +10,7 @@ interface Props {
 }
 
 const NavIcon = ({ active, children }: { active: boolean, children?: React.ReactNode }) => (
-    <div className={`mr-2 md:mr-3 transition-colors duration-300 ${active ? 'text-blue-600 dark:text-blue-400 drop-shadow-[0_0_5px_rgba(37,99,235,0.5)] dark:drop-shadow-[0_0_5px_rgba(59,130,246,0.8)]' : 'text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400'}`}>
+    <div className={`mr-2 md:mr-3 transition-colors duration-300 ${active ? 'text-blue-600 dark:text-blue-400 drop-shadow-[0_0_5px_rgba(37,99,235,0.5)] dark:drop-shadow-[0_0_5px_rgba(59,130,246,0.8)]' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400'}`}>
         {children}
     </div>
 );
@@ -50,7 +50,7 @@ export const Sidebar: React.FC<Props> = ({
     group relative flex-shrink-0 md:w-full flex flex-col md:flex-row items-center justify-center md:justify-start px-4 py-3 text-xs md:text-sm font-medium transition-all duration-300 cursor-pointer select-none
     ${currentView === viewName
       ? 'text-zinc-900 dark:text-white bg-zinc-100/50 dark:bg-white/5 md:bg-transparent'
-      : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
+      : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
     }
   `;
 
@@ -59,7 +59,7 @@ export const Sidebar: React.FC<Props> = ({
     w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 border
     ${selectedCategory === catName
       ? 'bg-zinc-200 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-white shadow-[0_0_10px_rgba(0,0,0,0.05)] dark:shadow-[0_0_10px_rgba(255,255,255,0.05)]'
-      : 'bg-transparent border-transparent text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-700 dark:hover:text-zinc-300'
+      : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-700 dark:hover:text-zinc-300'
     }
   `;
 
@@ -71,7 +71,7 @@ export const Sidebar: React.FC<Props> = ({
         
         {/* Main Navigation Panel */}
         <div className="border-b md:border-b-0 md:border-l border-zinc-200 dark:border-zinc-800/50 pb-2 md:pb-0 overflow-x-auto md:overflow-visible">
-           <h2 className="hidden md:block text-[10px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-[0.2em] mb-4 px-4">System_Modules</h2>
+           <h2 className="hidden md:block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] mb-4 px-4">System_Modules</h2>
            
            {/* Horizontal flex on mobile, vertical on desktop */}
            <nav className="flex md:flex-col space-x-1 md:space-x-0 md:space-y-0.5 min-w-max px-2 md:px-0">
@@ -165,17 +165,17 @@ export const Sidebar: React.FC<Props> = ({
         {/* Filters Panel (Only show when in feed view) */}
         {currentView === 'feed' && (
           <div className="hidden md:block animate-in fade-in slide-in-from-left-2 duration-300 pl-4 border-l border-zinc-200 dark:border-zinc-800/50 mt-8">
-            <h2 className="text-[10px] font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-[0.2em] mb-4">Data_Filters</h2>
+            <h2 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] mb-4">Data_Filters</h2>
             <nav className="space-y-2">
               <button onClick={() => onSelectCategory('All')} className={filterItemClass('All')}>
                 <span className="truncate">ALL_ENTRIES</span>
-                <span className="bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 py-0.5 px-1.5 rounded text-[10px] font-mono">{counts['All'] || 0}</span>
+                <span className="bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 py-0.5 px-1.5 rounded text-[10px] font-mono">{counts['All'] || 0}</span>
               </button>
 
               {categories.map((cat) => (
                 <button key={cat} onClick={() => onSelectCategory(cat)} className={filterItemClass(cat)}>
                   <span className="truncate mr-2 uppercase text-[10px] tracking-tight">{cat}</span>
-                  <span className="bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 py-0.5 px-1.5 rounded text-[10px] font-mono">{counts[cat] || 0}</span>
+                  <span className="bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 py-0.5 px-1.5 rounded text-[10px] font-mono">{counts[cat] || 0}</span>
                 </button>
               ))}
             </nav>

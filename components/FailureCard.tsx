@@ -93,12 +93,12 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
             <div>
               <div className="flex items-center gap-3 mb-2">
                  <Badge type="category" value={entry.category}>{entry.category}</Badge>
-                 <span className="text-zinc-500 text-xs font-mono border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 rounded bg-zinc-50 dark:bg-zinc-950/50">{entry.date}</span>
+                 <span className="text-zinc-600 dark:text-zinc-400 text-xs font-mono border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 rounded bg-zinc-50 dark:bg-zinc-950/50">{entry.date}</span>
               </div>
               <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white leading-tight tracking-tight">
                 {entry.title}
               </h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 font-mono">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 font-mono">
                  {entry.companies.join(' • ')}
               </p>
             </div>
@@ -113,11 +113,11 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
 
           {entry.impact && (
             <div className="mb-5 bg-zinc-50 dark:bg-zinc-900/50 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/50 flex gap-3 items-start">
-              <div className="mt-0.5 text-zinc-400 dark:text-zinc-500">
+              <div className="mt-0.5 text-zinc-500 dark:text-zinc-400">
                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
               </div>
               <div>
-                <span className="text-xs uppercase tracking-wider text-zinc-500 font-bold block mb-0.5">Impact Analysis</span>
+                <span className="text-xs uppercase tracking-wider text-zinc-600 dark:text-zinc-400 font-bold block mb-0.5">Impact Analysis</span>
                 <p className="text-zinc-700 dark:text-zinc-300 text-sm">{entry.impact}</p>
               </div>
             </div>
@@ -129,7 +129,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
                 <Badge key={tag} type="tag">#{tag}</Badge>
                 ))}
             </div>
-            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono opacity-0 group-hover:opacity-100 transition-opacity flex items-center group-hover:text-blue-500">
+            <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono opacity-0 group-hover:opacity-100 transition-opacity flex items-center group-hover:text-blue-500">
                 OPEN DOSSIER <span className="ml-1">→</span>
             </span>
           </div>
@@ -139,7 +139,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
       <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-black/70 backdrop-blur-sm rounded-lg p-1">
         <button 
             onClick={(e) => handleAction(e, handleCopyMarkdown)}
-            className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors relative"
+            className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors relative"
             title="Copy as Markdown"
         >
              {copiedMd ? (
@@ -150,7 +150,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
         </button>
         <button 
             onClick={(e) => handleAction(e, () => setShowJson(!showJson))}
-            className={`p-2 rounded transition-colors ${showJson ? 'text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
+            className={`p-2 rounded transition-colors ${showJson ? 'text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700'}`}
             title="View Raw JSON"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
@@ -161,7 +161,7 @@ export const FailureCard: React.FC<Props> = ({ entry, onClick }) => {
                 onClick={(e) => e.stopPropagation()}
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="p-2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded transition-colors"
+                className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded transition-colors"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
