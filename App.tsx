@@ -331,7 +331,7 @@ function App() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-sm font-bold tracking-wider text-zinc-900 dark:text-white uppercase">
-                Awesome Tech Failures
+                Failure Registry
               </h1>
               <span className="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono tracking-widest group-hover:text-zinc-500 dark:group-hover:text-zinc-300 transition-colors">{version}</span>
             </div>

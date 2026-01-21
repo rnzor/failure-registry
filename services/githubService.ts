@@ -11,7 +11,7 @@ interface VersionCache {
   expiresAt: number;
 }
 
-const CACHE_KEY = 'awesome-tech-failures-version';
+const CACHE_KEY = 'failure-registry-version';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export class GitHubService {
@@ -37,7 +37,7 @@ export class GitHubService {
           signal: controller.signal,
           headers: {
             'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'Awesome-Tech-Failures-App'
+            'User-Agent': 'Failure-Registry-App'
           }
         }
       );

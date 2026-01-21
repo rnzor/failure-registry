@@ -1,172 +1,242 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO & Metadata -->
-    <title>Awesome Tech Failures | The Index</title>
-    <meta name="description" content="A curated, high-signal index of technology failures, outages, and UX disasters for post-mortem analysis." />
-    <meta property="og:title" content="Awesome Tech Failures" />
-    <meta property="og:description" content="Failure is Data. Explore the index of critical tech incidents." />
-    <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#09090b" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- SEO & Metadata -->
+  <title>Failure Registry | The Index</title>
+  <meta name="description"
+    content="A curated, high-signal index of technology failures, outages, and UX disasters for post-mortem analysis." />
+  <meta property="og:title" content="Failure Registry" />
+  <meta property="og:description" content="Failure is Data. Explore the index of critical tech incidents." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Failure Registry" />
+  <meta name="theme-color" content="#09090b" />
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              zinc: {
-                850: '#1f1f22',
-                950: '#09090b',
-              }
-            },
-            animation: {
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'scan': 'scan 4s linear infinite',
-            },
-            keyframes: {
-              scan: {
-                '0%': { transform: 'translateY(-100%)' },
-                '100%': { transform: 'translateY(100%)' },
-              }
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            zinc: {
+              850: '#1f1f22',
+              950: '#09090b',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'scan': 'scan 4s linear infinite',
+          },
+          keyframes: {
+            scan: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(100%)' },
             }
           }
         }
       }
-    </script>
+    }
+  </script>
 
-    <!-- Global Styles -->
-    <style>
-      body {
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      
-      /* Dark Mode Base */
-      .dark body {
-        background-color: #050505;
-        color: #e4e4e7;
+  <!-- Global Styles -->
+  <style>
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Dark Mode Base */
+    .dark body {
+      background-color: #050505;
+      color: #e4e4e7;
+    }
+
+    /* Light Mode Base */
+    body {
+      background-color: #f4f4f5;
+      /* zinc-100 */
+      color: #18181b;
+      /* zinc-900 */
+    }
+
+    /* Subtle Grid Background for Depth */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background-size: 50px 50px;
+      transition: opacity 0.3s;
+    }
+
+    .dark .bg-grid {
+      background-image:
+        linear-gradient(to right, rgba(39, 39, 42, 0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+      opacity: 1;
+    }
+
+    /* In light mode, make grid very subtle */
+    .bg-grid {
+      background-image:
+        linear-gradient(to right, rgba(228, 228, 231, 0.8) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(228, 228, 231, 0.8) 1px, transparent 1px);
+      opacity: 0.5;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #a1a1aa;
+      /* zinc-400 */
+      border-radius: 3px;
+    }
+
+    .dark ::-webkit-scrollbar-track {
+      background: #09090b;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+      background: #27272a;
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
+
+    /* Animation Utilities (Polyfill for tailwindcss-animate) */
+    .animate-in {
+      animation-duration: 0.5s;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fade-in {
+      animation-name: fadeIn;
+    }
+
+    .slide-in-from-bottom-2 {
+      animation-name: slideInBottom2;
+    }
+
+    .slide-in-from-bottom-4 {
+      animation-name: slideInBottom4;
+    }
+
+    .slide-in-from-top-1 {
+      animation-name: slideInTop1;
+    }
+
+    .slide-in-from-left-2 {
+      animation-name: slideInLeft2;
+    }
+
+    .zoom-in-95 {
+      animation-name: zoomIn95;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
       }
 
-      /* Light Mode Base */
-      body {
-        background-color: #f4f4f5; /* zinc-100 */
-        color: #18181b; /* zinc-900 */
-      }
-      
-      /* Subtle Grid Background for Depth */
-      .bg-grid {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1;
-        background-size: 50px 50px;
-        transition: opacity 0.3s;
-      }
-
-      .dark .bg-grid {
-        background-image: 
-          linear-gradient(to right, rgba(39, 39, 42, 0.3) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
-        mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
-        -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+      to {
         opacity: 1;
       }
+    }
 
-      /* In light mode, make grid very subtle */
-      .bg-grid {
-        background-image: 
-          linear-gradient(to right, rgba(228, 228, 231, 0.8) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(228, 228, 231, 0.8) 1px, transparent 1px);
-        opacity: 0.5;
-      }
-
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #a1a1aa; /* zinc-400 */
-        border-radius: 3px;
-      }
-      .dark ::-webkit-scrollbar-track {
-        background: #09090b;
-      }
-      .dark ::-webkit-scrollbar-thumb {
-        background: #27272a;
-      }
-      .dark ::-webkit-scrollbar-thumb:hover {
-        background: #3f3f46;
+    @keyframes slideInBottom2 {
+      from {
+        transform: translateY(0.5rem);
+        opacity: 0;
       }
 
-      /* Animation Utilities (Polyfill for tailwindcss-animate) */
-      .animate-in {
-        animation-duration: 0.5s;
-        animation-fill-mode: both;
-        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      to {
+        transform: translateY(0);
+        opacity: 1;
       }
-      
-      .fade-in { animation-name: fadeIn; }
-      .slide-in-from-bottom-2 { animation-name: slideInBottom2; }
-      .slide-in-from-bottom-4 { animation-name: slideInBottom4; }
-      .slide-in-from-top-1 { animation-name: slideInTop1; }
-      .slide-in-from-left-2 { animation-name: slideInLeft2; }
-      .zoom-in-95 { animation-name: zoomIn95; }
+    }
 
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      
-      @keyframes slideInBottom2 {
-        from { transform: translateY(0.5rem); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    @keyframes slideInBottom4 {
+      from {
+        transform: translateY(1rem);
+        opacity: 0;
       }
 
-      @keyframes slideInBottom4 {
-        from { transform: translateY(1rem); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+      to {
+        transform: translateY(0);
+        opacity: 1;
       }
-      
-      @keyframes slideInTop1 {
-        from { transform: translateY(-0.25rem); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideInTop1 {
+      from {
+        transform: translateY(-0.25rem);
+        opacity: 0;
       }
 
-      @keyframes slideInLeft2 {
-        from { transform: translateX(-0.5rem); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInLeft2 {
+      from {
+        transform: translateX(-0.5rem);
+        opacity: 0;
       }
 
-      @keyframes zoomIn95 {
-        from { transform: scale(0.95); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
+      to {
+        transform: translateX(0);
+        opacity: 1;
       }
-    </style>
+    }
 
-    <script type="importmap">
+    @keyframes zoomIn95 {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script type="importmap">
     {
       "imports": {
         "fuse.js": "https://esm.sh/fuse.js@^7.1.0",
@@ -178,11 +248,13 @@
       }
     }
     </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div class="bg-grid"></div>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body>
+  <div class="bg-grid"></div>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>

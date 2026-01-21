@@ -1,8 +1,14 @@
 {
-  "name": "awesome-tech-failures",
+  "name": "failure-registry",
   "private": true,
   "version": "1.1.0",
   "type": "module",
+  "description": "A comprehensive registry of technology failures, outages, and incidents. Learn from others' mistakes to build more resilient systems.",
+  "homepage": "https://failureregistry.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rnzor/failure-registry"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

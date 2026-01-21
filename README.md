@@ -1,12 +1,14 @@
-# Awesome Tech Failures 🛠️💥
+# Failure Registry 🛠️💥
+
+_Formerly known as awesome-tech-failures-app_
 
 > **BETA VERSION** - This is a beta release of the Awesome Tech Failures app. Features and UI may change.
 
-A comprehensive database of technology failures, outages, and incidents from across the industry. Learn from others' mistakes to build more resilient systems.
+A comprehensive registry of technology failures, outages, and incidents from across the industry. Learn from others' mistakes to build more resilient systems.
 
 ## Features
 
-- 📊 **Extensive Database**: Curated collection of major tech failures with detailed analysis
+- 📊 **Extensive Registry**: Curated collection of major tech failures with detailed analysis
 - 🎨 **Dual Theme**: Dark and light themes with improved accessibility
 - 🔍 **Advanced Search**: Fuzzy search across titles, descriptions, companies, and tags
 - 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
